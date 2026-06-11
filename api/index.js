@@ -1,4 +1,3 @@
-
 module.exports = async (req, res) => {
   const shopifyDomain = "jobs3u.joblagii.com";
   const proxyHost = req.headers.host;
@@ -78,6 +77,20 @@ module.exports = async (req, res) => {
     // ✅ HTML rewrite + Google verification + JobPosting schema dates
     if (contentType.includes("text/html")) {
       let body = rewriteText(await response.text());
+
+      // Remove ad scripts
+      body = body.replace(
+        /<script[^>]*>[\s\S]*?atOptions[\s\S]*?<\/script>/gi,
+        ""
+      );
+      body = body.replace(
+        /<script[^>]*src="[^"]*adsterra[^"]*"[^>]*><\/script>/gi,
+        ""
+      );
+      body = body.replace(
+        /<script[^>]*src="[^"]*hiudagivme[^"]*"[^>]*><\/script>/gi,
+        ""
+      );
 
       // Inject Google Search Console verification
       body = body.replace(
