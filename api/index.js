@@ -78,9 +78,13 @@ module.exports = async (req, res) => {
     if (contentType.includes("text/html")) {
       let body = rewriteText(await response.text());
 
-      // Remove all ad scripts
+      // ✅ Remove ads on Vercel proxy only
       body = body.replace(
-        /<script[^>]*>[\s\S]*?atOptions[\s\S]*?<\/script>/gi,
+        /atOptions\s*=\s*\{[\s\S]*?\};/gi,
+        ""
+      );
+      body = body.replace(
+        /<script[^>]*src="https:\/\/www\.highperformanceformat\.com[^"]*"[^>]*><\/script>/gi,
         ""
       );
       body = body.replace(
@@ -89,10 +93,6 @@ module.exports = async (req, res) => {
       );
       body = body.replace(
         /<script[^>]*src="[^"]*hiudagivme[^"]*"[^>]*><\/script>/gi,
-        ""
-      );
-      body = body.replace(
-        /<script[^>]*src="[^"]*highperformanceformat[^"]*"[^>]*><\/script>/gi,
         ""
       );
 
