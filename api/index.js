@@ -78,7 +78,7 @@ module.exports = async (req, res) => {
     if (contentType.includes("text/html")) {
       let body = rewriteText(await response.text());
 
-      // Remove ad scripts
+      // Remove all ad scripts
       body = body.replace(
         /<script[^>]*>[\s\S]*?atOptions[\s\S]*?<\/script>/gi,
         ""
@@ -89,6 +89,10 @@ module.exports = async (req, res) => {
       );
       body = body.replace(
         /<script[^>]*src="[^"]*hiudagivme[^"]*"[^>]*><\/script>/gi,
+        ""
+      );
+      body = body.replace(
+        /<script[^>]*src="[^"]*highperformanceformat[^"]*"[^>]*><\/script>/gi,
         ""
       );
 
